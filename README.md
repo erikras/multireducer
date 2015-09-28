@@ -4,7 +4,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/multireducer.svg?style=flat-square)](https://www.npmjs.com/package/multireducer)
 [![Build Status](https://img.shields.io/travis/erikras/multireducer/master.svg?style=flat-square)](https://travis-ci.org/erikras/multireducer)
 
-`multireducer` is a utility to wrap many copies of a single Redux reducer a single key-based reducer.
+`multireducer` is a utility to wrap many copies of a single Redux reducer into a single key-based reducer.
 
 ## Installation
 
@@ -18,7 +18,7 @@ There are times when writing a Redux application where you might find yourself n
 
 However, Redux won't let you do this:
 
-```
+```javascript
 import list from './reducers/list';
 
 const reducer = combineReducers({
@@ -36,7 +36,7 @@ This is where `multireducer` comes in. Multireducer lets you mount the same redu
 
 **STEP 1:** First you will need to wrap the reducer you want to copy.
 
-```
+```javascript
 import multireducer from 'multireducer';
 import list from './reducers/list';
 
@@ -52,7 +52,7 @@ const reducer = combineReducers({
 
 **STEP 2:** Now use `connectMultireducer()` instead of `react-redux`'s `connect()` to connect your component to the Redux store.
 
-```
+```javascript
 import React, {Component, PropTypes} from 'react';
 import {connectMultireducer} from 'multireducer';
 import {add, remove} from './actions/list';
@@ -89,7 +89,7 @@ export default ListComponent;
 
 **STEP 3:** Pass the appropriate `multireducerKey` prop to your decorated component.
 
-```
+```javascript
 render() {
   return (
     <div>
