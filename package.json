@@ -1,7 +1,7 @@
 {
   "name": "multireducer",
   "version": "1.0.0",
-  "description": "A utility to wrap many copies of a single Redux reducer a single key-based reducer",
+  "description": "A utility to wrap many copies of a single Redux reducer a single key-based reducer.",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
