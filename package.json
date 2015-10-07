@@ -1,6 +1,6 @@
 {
   "name": "multireducer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A utility to wrap many copies of a single Redux reducer into a single key-based reducer.",
   "main": "./lib/index.js",
   "repository": {
@@ -51,7 +51,7 @@
     "redux": "3.0.2"
   },
   "peerDependencies": {
-    "react": "0.14.0-rc1"
+    "react": "^0.14.0"
   },
   "npmName": "multireducer",
   "npmFileMap": [
