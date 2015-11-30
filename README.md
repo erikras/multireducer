@@ -41,7 +41,7 @@ import multireducer from 'multireducer';
 import list from './reducers/list';
 
 const reducer = combineReducers({
-  lists: multireducer({
+  multireducer: multireducer({ // must be mounted at 'multireducer'
     proposed  : list,
     scheduled : list,
     active    : list,
@@ -107,7 +107,7 @@ render() {
 
 ### `multireducer(reducers:Object) : Function`
 
-Wraps many reducers into one, much like Redux's `combineReducers()` does, except that the reducer that `multireducer` creates will filter your actions by a `multireducerKey`, so that the right reducer gets the action.
+Wraps many reducers into one, much like Redux's `combineReducers()` does, except that the reducer that `multireducer` creates will filter your actions by a `multireducerKey`, so that the right reducer gets the action. **Remember to mount it under `multireducer` in your reducer tree!**
 
 ### `connectMultireducer(mapStateToProps:Function?, actions:Object?) : Function`
 
