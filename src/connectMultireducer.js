@@ -30,7 +30,7 @@ export default function connectMultireducer(mapStateToProps, actions = {}) {
           connect(
             (state, ownProps) => {
               const multireducerKeys = Object.keys(state.multireducer);
-              if (!multireducerKeys.find(key => key === multireducerKey)) {
+              if (!multireducerKeys.filter(key => key === multireducerKey)[0]) {
                 throw new Error(`No state for multireducer key "${multireducerKey}". You initialized multireducer with "${multireducerKeys.join(', ')}".`);
               }
               const slice = state.multireducer[multireducerKey];
