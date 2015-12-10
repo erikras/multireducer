@@ -76,8 +76,8 @@ describe('connectMultireducer', () => {
     store.dispatch({ type: actionType, state: false, [key]: stateSliceKey });
     expect(compState).toEqual(false);
 
-    // store.dispatch({ type: actionType, state: Number.NaN, [key]: stateSliceKey });
-    // expect(isNaN(compState)).toBe(true);
+    store.dispatch({ type: actionType, state: Number.NaN, [key]: stateSliceKey });
+    expect(isNaN(compState)).toBe(true);
 
     store.dispatch({ type: actionType, state: null, [key]: stateSliceKey });
     expect(compState).toEqual(null);
