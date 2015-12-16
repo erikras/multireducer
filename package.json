@@ -46,7 +46,7 @@
     "eslint": "^1.8.0",
     "eslint-config-airbnb": "^0.1.0",
     "eslint-plugin-react": "^3.6.3",
-    "expect": "^1.12.2",
+    "expect": "^1.13.4",
     "mocha": "^2.3.3",
     "react": "^0.14.1",
     "react-redux": "^4.0.0",
