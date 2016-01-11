@@ -28,12 +28,13 @@ export default function connectMultireducer(mapStateToProps, actions = {}) {
       generateConnectedComponent({multireducerKey}) {
         this.ConnectedComponent =
           connect(
-            state => {
-              const slice = state.multireducer[multireducerKey];
-              if (!slice) {
-                throw new Error(`No state for multireducer key "${multireducerKey}". You initialized multireducer with ${Object.keys(state.multireducer).join(', ')}.`);
+            (state, ownProps) => {
+              const multireducerKeys = Object.keys(state.multireducer);
+              if (!multireducerKeys.filter(key => key === multireducerKey)[0]) {
+                throw new Error(`No state for multireducer key "${multireducerKey}". You initialized multireducer with "${multireducerKeys.join(', ')}".`);
               }
-              return mapStateToProps ? mapStateToProps(slice) : slice;
+              const slice = state.multireducer[multireducerKey];
+              return mapStateToProps ? mapStateToProps(slice, ownProps) : slice;
             },
             multireducerBind(actions, multireducerKey)
           )(DecoratedComponent);

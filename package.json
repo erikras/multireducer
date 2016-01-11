@@ -15,7 +15,7 @@
     "clean": "rimraf dist lib",
     "lint": "eslint src",
     "prepublish": "npm run lint && npm run test && npm run clean && npm run build",
-    "test": "mocha --compilers js:babel-core/register --recursive"
+    "test": "mocha --compilers js:babel-core/register --recursive --require ./test/setup.js"
   },
   "keywords": [
     "react",
@@ -47,8 +47,10 @@
     "eslint-config-airbnb": "^0.1.0",
     "eslint-plugin-react": "^3.6.3",
     "expect": "^1.12.2",
+    "jsdom": "5.0.0",
     "mocha": "^2.3.3",
     "react": "^0.14.1",
+    "react-addons-test-utils": "^0.14.3",
     "react-redux": "^4.0.0",
     "redux": "^3.0.4",
     "rifraf": "^2.0.2",
