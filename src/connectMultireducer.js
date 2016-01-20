@@ -1,6 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
+import wrapMapStateToProps from './wrapMapStateToProps';
+import wrapMapDispatchToProps from './wrapMapDispatchToProps';
+
 function getDisplayName(Comp) {
   return Comp.displayName || Comp.name || 'Component';
 }
@@ -27,8 +30,8 @@ export default function connectMultireducer(mapStateToProps, mapDispatchToProps,
       generateConnectedComponent({multireducerKey}) {
         this.ConnectedComponent =
           connect(
-            (state, ownProps) => mapStateToProps(multireducerKey, state, ownProps),
-            dispatch => mapDispatchToProps(multireducerKey, dispatch),
+            wrapMapStateToProps(mapStateToProps, multireducerKey),
+            wrapMapDispatchToProps(mapDispatchToProps, multireducerKey),
             ...rest
           )(DecoratedComponent);
       }
