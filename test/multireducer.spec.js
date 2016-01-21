@@ -27,6 +27,39 @@ describe('multireducer', () => {
     });
   });
 
+  it('should throw an error if you use custom mount point and reducerKey is not specified', () =>{
+    try {
+      const reducer = multireducer(counter);
+    }
+    catch(e) {
+      const errorMessage = `No key specified for custom mounting of reducer`
+      expect(e.message).toEqual(errorMessage);
+    }
+  });
+
+  it('should respond to actions when mounted as a single reducer', () => {
+
+    const reducer = multireducer(counter, 'a');
+
+    let state = {
+      count: 5
+    };
+
+    expect(reducer(state, incrementA))
+      .toEqual({
+        count: 6
+      });
+
+    state = {
+      count: 11
+    };
+
+    expect(reducer(state, decrementA))
+      .toEqual({
+        count: 10
+      });
+  });
+
   it('should not respond to unbound action', () => {
     const state = {
       a: {count: 5},
