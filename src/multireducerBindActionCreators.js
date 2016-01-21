@@ -1,23 +1,25 @@
 import key from './key';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 
 export function multireducerWrapAction(action, multireducerKey) {
+  const markTypeWitKey = type => type + key + multireducerKey;
+
   if (action.types) {
     return {
       ...action,
-      types: action.types.map(type => type + key + multireducerKey)
+      types: action.types.map(markTypeWitKey)
     };
   }
   return {
     ...action,
-    type: action.type + key + multireducerKey
+    type: markTypeWitKey(action.type)
   };
 }
 
 export default function multireducerBindActionCreators(multireducerKey, actionCreators, dispatch) {
   const wrappingDispatch = (action) => {
     if (typeof action === 'function') {
-      const wrappedThunk = (globalDispatch, getState) => action(wrappingDispatch, getState, globalDispatch);
+      const wrappedThunk = (globalDispatch, getState) => action(wrappingDispatch, getState, globalDispatch, multireducerKey);
       return dispatch(wrappedThunk);
     } else if (typeof action === 'object') {
       return dispatch(multireducerWrapAction(action, multireducerKey));
