@@ -28,13 +28,8 @@ describe('multireducer', () => {
   });
 
   it('should throw an error if you use custom mount point and reducerKey is not specified', () =>{
-    try {
-      const reducer = multireducer(counter);
-    }
-    catch(e) {
       const errorMessage = `No key specified for custom mounting of reducer`
-      expect(e.message).toEqual(errorMessage);
-    }
+      expect(() => multireducer(counter)).toThrow(errorMessage);
   });
 
   it('should respond to actions when mounted as a single reducer', () => {

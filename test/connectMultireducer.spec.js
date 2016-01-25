@@ -15,7 +15,7 @@ describe('connectMultireducer', () => {
   class ProviderMock extends Component {
     static childContextTypes = {
       store: PropTypes.object.isRequired
-    }
+    };
 
     getChildContext() {
       return { store: this.props.store }

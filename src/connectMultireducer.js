@@ -14,7 +14,7 @@ export default function connectMultireducer(mapStateToProps, mapDispatchToProps,
       static displayName = `ConnectMultireducer(${getDisplayName(DecoratedComponent)})`;
       static propTypes = {
         multireducerKey: PropTypes.string.isRequired
-      }
+      };
 
       componentWillMount() {
         this.generateConnectedComponent(this.props);
