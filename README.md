@@ -154,7 +154,7 @@ Creates a higher order component decorator, much like [`react-redux`](https://gi
 
 ##### -`mapStateToProps(key, state, [ownProps]) : Function` [optional]
 
-> Similar to the `mapStateToProps` passed to `react-redux`'s [`connect()`](https://github.com/rackt/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options), **_BUT WITH ONE DIFFERENCE_**: :warning: The `mapStateToProps` given to `connectMultireducer()` has first parameter `key` that is equal to `multireducerKey` prop of connected component. You have to use `key` to access _state slice corresponding to the reducer specified by `multireducerKey`_. :warning: 
+> Similar to the `mapStateToProps` passed to `react-redux`'s [`connect()`](https://github.com/rackt/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). The difference is that `mapStateToProps` given to `connectMultireducer()` has first parameter `key` that is equal to `multireducerKey` prop of connected component. You have to use `key` to access _state slice corresponding to the reducer specified by `multireducerKey`_ (see STEP 2 and [example](https://github.com/jsdmc/react-redux-router-crud-boilerplate/blob/master/src/components/CounterMulti.jsx#L15)).
 
 ##### -`mapDispatchToProps(key, dispatch, [ownProps]) : Object or Function` [optional]
 
