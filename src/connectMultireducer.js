@@ -1,18 +1,20 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import multireducerBind from './multireducerBind';
+
+import wrapMapStateToProps from './wrapMapStateToProps';
+import wrapMapDispatchToProps from './wrapMapDispatchToProps';
 
 function getDisplayName(Comp) {
   return Comp.displayName || Comp.name || 'Component';
 }
 
-export default function connectMultireducer(mapStateToProps, actions = {}) {
+export default function connectMultireducer(mapStateToProps, mapDispatchToProps, ...rest) {
   return DecoratedComponent => {
     class ConnectMultireducer extends Component {
       static displayName = `ConnectMultireducer(${getDisplayName(DecoratedComponent)})`;
       static propTypes = {
         multireducerKey: PropTypes.string.isRequired
-      }
+      };
 
       componentWillMount() {
         this.generateConnectedComponent(this.props);
@@ -28,22 +30,15 @@ export default function connectMultireducer(mapStateToProps, actions = {}) {
       generateConnectedComponent({multireducerKey}) {
         this.ConnectedComponent =
           connect(
-            (state, ownProps) => {
-              const multireducerKeys = Object.keys(state.multireducer);
-              if (!multireducerKeys.filter(key => key === multireducerKey)[0]) {
-                throw new Error(`No state for multireducer key "${multireducerKey}". You initialized multireducer with "${multireducerKeys.join(', ')}".`);
-              }
-              const slice = state.multireducer[multireducerKey];
-              return mapStateToProps ? mapStateToProps(slice, ownProps) : slice;
-            },
-            multireducerBind(actions, multireducerKey)
+            wrapMapStateToProps(mapStateToProps, multireducerKey),
+            wrapMapDispatchToProps(mapDispatchToProps, multireducerKey),
+            ...rest
           )(DecoratedComponent);
       }
 
       render() {
-        const {multireducerKey, ...props} = this.props;
         const {ConnectedComponent} = this;
-        return <ConnectedComponent {...props}/>;
+        return <ConnectedComponent {...this.props}/>;
       }
     }
     return ConnectMultireducer;

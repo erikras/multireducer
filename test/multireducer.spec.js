@@ -1,5 +1,6 @@
 import expect from 'expect';
 import multireducer from '../src/multireducer';
+import {multireducerWrapAction} from '../src/multireducerBindActionCreators'
 import key from '../src/key';
 import counter from './counter';
 import {increment, decrement} from './counter';
@@ -9,30 +10,13 @@ const reducer = multireducer({
   b: counter,
   c: counter
 });
-const incrementA = {
-  ...increment(),
-  [key]: 'a'
-};
-const incrementB = {
-  ...increment(),
-  [key]: 'b'
-};
-const incrementC = {
-  ...increment(),
-  [key]: 'c'
-};
-const decrementA = {
-  ...decrement(),
-  [key]: 'a'
-};
-const decrementB = {
-  ...decrement(),
-  [key]: 'b'
-};
-const decrementC = {
-  ...decrement(),
-  [key]: 'c'
-};
+const incrementA = multireducerWrapAction(increment(), 'a');
+const incrementB = multireducerWrapAction(increment(), 'b');
+const incrementC = multireducerWrapAction(increment(), 'c');
+
+const decrementA = multireducerWrapAction(decrement(), 'a');
+const decrementB = multireducerWrapAction(decrement(), 'b');
+const decrementC = multireducerWrapAction(decrement(), 'c');
 
 describe('multireducer', () => {
   it('should initialize properly', () => {
@@ -41,6 +25,34 @@ describe('multireducer', () => {
       b: {count: 0},
       c: {count: 0}
     });
+  });
+
+  it('should throw an error if you use custom mount point and reducerKey is not specified', () =>{
+      const errorMessage = `No key specified for custom mounting of reducer`
+      expect(() => multireducer(counter)).toThrow(errorMessage);
+  });
+
+  it('should respond to actions when mounted as a single reducer', () => {
+
+    const reducer = multireducer(counter, 'a');
+
+    let state = {
+      count: 5
+    };
+
+    expect(reducer(state, incrementA))
+      .toEqual({
+        count: 6
+      });
+
+    state = {
+      count: 11
+    };
+
+    expect(reducer(state, decrementA))
+      .toEqual({
+        count: 10
+      });
   });
 
   it('should not respond to unbound action', () => {
