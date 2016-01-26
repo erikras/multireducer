@@ -1,6 +1,6 @@
 {
   "name": "multireducer",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A utility to wrap many copies of a single Redux reducer into a single key-based reducer.",
   "main": "./lib/index.js",
   "repository": {
@@ -15,7 +15,7 @@
     "clean": "rimraf dist lib",
     "lint": "eslint src",
     "prepublish": "npm run lint && npm run test && npm run clean && npm run build",
-    "test": "mocha --compilers js:babel-core/register --recursive --require ./test/setup.js"
+    "test": "npm run lint && mocha --compilers js:babel-core/register --recursive --require ./test/setup.js"
   },
   "keywords": [
     "react",
@@ -34,8 +34,8 @@
   "homepage": "https://github.com/erikras/multireducer",
   "devDependencies": {
     "babel": "^6.0.15",
-    "babel-cli": "^6.0.15",
-    "babel-core": "^6.0.16",
+    "babel-cli": "^6.4.5",
+    "babel-core": "^6.4.5",
     "babel-eslint": "^4.1.3",
     "babel-loader": "^6.0.1",
     "babel-plugin-syntax-class-properties": "^6.0.14",
@@ -43,19 +43,19 @@
     "babel-preset-es2015": "^6.0.15",
     "babel-preset-react": "^6.0.15",
     "babel-preset-stage-0": "^6.0.15",
-    "eslint": "^1.8.0",
+    "eslint": "^1.10.3",
     "eslint-config-airbnb": "^0.1.0",
-    "eslint-plugin-react": "^3.6.3",
+    "eslint-plugin-react": "^3.13.1",
     "expect": "^1.12.2",
-    "jsdom": "5.0.0",
+    "jsdom": "^7.2.2",
     "mocha": "^2.3.3",
     "react": "^0.14.1",
     "react-addons-test-utils": "^0.14.3",
     "react-redux": "^4.0.0",
-    "redux": "^3.0.4",
+    "redux": "^3.0.6",
     "rifraf": "^2.0.2",
-    "rimraf": "^2.4.3",
-    "webpack": "^1.12.2"
+    "rimraf": "^2.5.1",
+    "webpack": "^1.12.12"
   },
   "peerDependencies": {
     "react-redux": "^3.0.0 || ^4.0.0",
