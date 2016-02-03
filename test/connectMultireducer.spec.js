@@ -28,7 +28,7 @@ describe('connectMultireducer', () => {
 
   let store = createStore(combineReducers({
     multireducer: multireducer({
-      [stateSliceKey]: (prev = 0, action = {}) => {
+      [stateSliceKey]: (prev = 0, action) => {
         return action.type ===  actionType ? action.state : prev;
       }
     })

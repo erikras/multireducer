@@ -11,7 +11,7 @@ export default function multireducer(reducers, reducerKey) {
     }
   }
 
-  const initialState = isCustomMountPoint ? reducers() : mapValues(reducers, reducer => reducer());
+  const initialState = isCustomMountPoint ? reducers(undefined, {}) : mapValues(reducers, reducer => reducer(undefined, {}));
 
   return (state = initialState, action) => {
     if (action && action.type && ~action.type.indexOf(key)) {
