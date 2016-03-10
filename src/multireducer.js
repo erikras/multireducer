@@ -1,3 +1,5 @@
+import immutable from 'immutable';
+
 import mapValues from './mapValues';
 import key from './key';
 
@@ -29,7 +31,9 @@ export default function multireducer(reducers, reducerKey) {
         const newStateValue = reducers(state, actionWithoutKey);
 
         // state is object
-        if (typeof newStateValue === 'object') {
+        if (immutable.Iterable.isIterable(newStateValue)) {
+          return newStateValue;
+        } else if (typeof newStateValue === 'object') {
           return {
             ...state,
             ...newStateValue
@@ -40,13 +44,21 @@ export default function multireducer(reducers, reducerKey) {
       }
 
       // usual multireducer mounting
-      const reducer = reducers[actionReducerKey];
+      if (immutable.Iterable.isIterable(reducers)) {
+        const reducer = reducers.get(actionReducerKey);
 
-      if (reducer) {
-        return {
-          ...state,
-          [actionReducerKey]: reducer(state[actionReducerKey], actionWithoutKey)
-        };
+        if (reducer) {
+          return state.update(actionReducerKey, oldValue => reducer(oldValue, actionWithoutKey));
+        }
+      } else {
+        const reducer = reducers[actionReducerKey];
+
+        if (reducer) {
+          return {
+            ...state,
+            [actionReducerKey]: reducer(state[actionReducerKey], actionWithoutKey)
+          };
+        }
       }
     }
 

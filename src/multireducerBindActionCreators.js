@@ -2,17 +2,17 @@ import key from './key';
 import { bindActionCreators } from 'redux';
 
 export function multireducerWrapAction(action, multireducerKey) {
-  const markTypeWitKey = type => type + key + multireducerKey;
+  const markTypeWithKey = type => `${type}${key}${multireducerKey}`;
 
   if (action.types) {
     return {
       ...action,
-      types: action.types.map(markTypeWitKey)
+      types: action.types.map(markTypeWithKey)
     };
   }
   return {
     ...action,
-    type: markTypeWitKey(action.type)
+    type: markTypeWithKey(action.type)
   };
 }
 
