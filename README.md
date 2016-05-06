@@ -1,3 +1,13 @@
+
+---
+
+**This project is no longer supported. It was mainly done as an educational exercise in the first place, and @erikras does not plan on putting any more work into it.**
+
+If you would be interested in taking ownership and responsibility of this library, contact @erikras on Twitter.
+
+---
+
+
 #multireducer
 
 [![NPM Version](https://img.shields.io/npm/v/multireducer.svg?style=flat-square)](https://www.npmjs.com/package/multireducer) 
