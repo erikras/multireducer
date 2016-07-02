@@ -1,16 +1,6 @@
+# multireducer
 
----
-
-**This project is no longer supported. It was mainly done as an educational exercise in the first place, and @erikras does not plan on putting any more work into it.**
-
-If you would be interested in taking ownership and responsibility of this library, contact @erikras on Twitter.
-
----
-
-
-#multireducer
-
-[![NPM Version](https://img.shields.io/npm/v/multireducer.svg?style=flat-square)](https://www.npmjs.com/package/multireducer) 
+[![NPM Version](https://img.shields.io/npm/v/multireducer.svg?style=flat-square)](https://www.npmjs.com/package/multireducer)
 [![NPM Downloads](https://img.shields.io/npm/dm/multireducer.svg?style=flat-square)](https://www.npmjs.com/package/multireducer)
 [![Build Status](https://img.shields.io/travis/erikras/multireducer/master.svg?style=flat-square)](https://travis-ci.org/erikras/multireducer)
 
@@ -24,7 +14,7 @@ npm install --save multireducer
 
 ## Why?
 
-There are times when writing a Redux application where you might find yourself needing multiple copies of the same reducer. For example, you might need more than one list of the same type of object to be displayed. Rather than make a big reducer to handle list `A`, `B`, and `C`, and have action creators either in the form `addToB(item)` or `addToList('B', item)`, it would be easier to write one "list" reducer, which is easier to write, reason about, and test, with a simpler `add(item)` API. 
+There are times when writing a Redux application where you might find yourself needing multiple copies of the same reducer. For example, you might need more than one list of the same type of object to be displayed. Rather than make a big reducer to handle list `A`, `B`, and `C`, and have action creators either in the form `addToB(item)` or `addToList('B', item)`, it would be easier to write one "list" reducer, which is easier to write, reason about, and test, with a simpler `add(item)` API.
 
 However, Redux won't let you do this:
 
@@ -68,25 +58,26 @@ const reducer = combineReducers({
 });
 ```
 
-**STEP 2:** Now use `connectMultireducer()` instead of `react-redux`'s `connect()` to connect your component to the Redux store. You have to specify which part of state contains data for your copied reducers and then access it using dynamic `key` paremeter that will be equal to `multireducerKey` prop of connected component
+**STEP 2:** Now use `multireducer`'s `bindActionCreators()` instead of `react-redux`'s `bindActionCreators()` to make your action multireducerify. You have to specify which part of state contains data for your copied reducers and then access it using the prop you pass to the connected component, here I recommand `as`. And you have to tell `bindActionCreators` what is your `multireducerKey`.
 
 ```javascript
-import React, {Component, PropTypes} from 'react';
-import {connectMultireducer} from 'multireducer';
-import {add, remove} from './actions/list';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'multireducer';
+import { add, remove } from './actions/list';
 
 class ListComponent extends Component {
   static propTypes = {
     list: PropTypes.array.isRequired
   }
-  
+
   render() {
     const {add, list, remove} = this.props;
     return (
       <div>
         <button onClick={() => add('New Item')}>Add</button>
         <ul>
-          {list.map((item, index) => 
+          {list.map((item, index) =>
             <li key={index}>
               {item}
               (<button onClick={() => remove(item)}>X</button>)
@@ -97,11 +88,11 @@ class ListComponent extends Component {
   }
 }
 
-const mapStateToProps = (key, state) => ({ list: state.listCollection[key] });
+const mapStateToProps = (state, { as }) => ({ list: state.listCollection[as] });
 
-const mapDispatchToProps = {add, remove};
+const mapDispatchToProps = (dispatch, { as }) => bindActionCreators({ add, remove }, dispatch, as)
 
-ListComponent = connectMultireducer(
+ListComponent = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ListComponent);
@@ -109,19 +100,19 @@ ListComponent = connectMultireducer(
 export default ListComponent;
 ```
 
-Or if you mounted one copy of reducer, access needed part of state directly. Parameter `key` for `mapStateToProps` will be equal to 'additional' from example above. In such cases it may be not used and actually you can use standard `connect()` from 'react-redux'.
+Or if you mounted one copy of reducer, access needed part of state directly. And tell `bindActionCreators` what is your `multireducerKey`, in this example it should be 'additional'.
 
 ```javascript
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {add, remove} from './actions/list';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'multireducer';
+import { add, remove } from './actions/list';
 
 ...
 
-const mapStateToProps = (state) => ({ list: state.myList });
-const mapDispatchToProps = dispatch => {
-  return multireducerBindActionCreators('additional', {add, remove}, dispatch);
-}
+const mapStateToProps = state => ({ list: state.myList });
+const mapDispatchToProps = dispatch => bindActionCreators({ add, remove }, dispatch, 'additional');
+
 ListComponent = connect(
   mapStateToProps,
   mapDispatchToProps
@@ -137,10 +128,10 @@ render() {
   return (
     <div>
       <h1>Lists</h1>
-      <ListComponent multireducerKey="proposed"/>
-      <ListComponent multireducerKey="scheduled"/>
-      <ListComponent multireducerKey="active"/>
-      <ListComponent multireducerKey="complete"/>
+      <ListComponent as="proposed"/>
+      <ListComponent as="scheduled"/>
+      <ListComponent as="active"/>
+      <ListComponent as="complete"/>
     </div>
   );
 }
@@ -158,30 +149,7 @@ Wraps many (or single) reducers into one, much like Redux's `combineReducers()` 
 ##### -`reducerKey : (String)` [optional]
 > This parameter will be used as `multireducerKey` for connected single  reducer.
 
-### `connectMultireducer([mapStateToProps], [mapDispatchToProps], [mergeProps], [options]) : Function`
-
-Creates a higher order component decorator, much like [`react-redux`](https://github.com/rackt/react-redux)'s [`connect()`](https://github.com/rackt/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options), but will provide reducer's key as fisrt parameter to `mapStateToProps` and to `mapDispatchToProps`(if it's a function), automatically bind your actions to `dispatch` if `mapDispatchToProps` is a hash of actions, and add the needed filter to each of your actions so that they will go to the correct reducer.
-
-##### -`mapStateToProps(key, state, [ownProps]) : Function` [optional]
-
-> Similar to the `mapStateToProps` passed to `react-redux`'s [`connect()`](https://github.com/rackt/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). The difference is that `mapStateToProps` given to `connectMultireducer()` has first parameter `key` that is equal to `multireducerKey` prop of connected component. You have to use `key` to access _state slice corresponding to the reducer specified by `multireducerKey`_ (see STEP 2 and [example](https://github.com/jsdmc/react-redux-router-crud-boilerplate/blob/master/src/components/CounterMulti.jsx#L15)).
-
-##### -`mapDispatchToProps(key, dispatch, [ownProps]) : Object or Function` [optional]
-
-> Similar to the `mapDispatchToProps` passed to `react-redux`'s [`connect()`](https://github.com/rackt/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). If it's function - it's first parameter `key` corresponds to `multireducerKey` for connected component. You can use `multireducerBindActionCreators` for manual binding actions with 'key' and combine with [`bindActionCreators()`](http://rackt.github.io/redux/docs/api/bindActionCreators.html) helper from Redux. If it's object, every action insice will be bound to dispatch and will have modified have modified `type`
-
-```javascript
-// original action
-{ type: 'UPDATE_LIST', ...}
-
-// action fired using mapped action creators
-{ type: 'UPDATE_LIST__multireducerKey=proposed', ...}
-```
-
-### `multireducerBindActionCreators(reducerKey, actions, dispatch) : Function`
-
-##### -`reducerKey : String`
-> Reducer key that you can take as 1st param `key` from `mapDispatchToProps`, or specify any other key that will be added to dispathed actions types.
+### `bindActionCreators(actions, dispatch, multireducerKey) : Function`
 
 ##### -`actions : Object`
 > Object with actions you'd like to be bound to dispatch
@@ -189,27 +157,8 @@ Creates a higher order component decorator, much like [`react-redux`](https://gi
 ##### -`dispatch : String`
 > A 'global' dispatch you take from `mapDispatchToProps`
 
-Example 
-```javascript
-import { bindActionCreators } from 'redux';
-import { multireducerBindActionCreators } from 'multireducer';
-import * as BaseListActions from 'redux-base/modules/list';
-import * as ProposedListActions from 'redux-base/modules/proposedList';
-
-const mapDispatchToProps = (key, dispatch) => {
-  return {
-    ...bindActionCreators(BaseListActions, dispatch),
-    ...multireducerBindActionCreators(key, ProposedListActions, dispatch)
-  };
-};
-```
-
-### Props to your decorated component
-
-#### -`multireducerKey : String` [required]
-
-> The key to the reducer in the `reducers` object given to `multireducer()`. This will limit its state and actions to the corresponding reducer.
-
+##### -`multireducerKey : String`
+> specify the key that will be added to dispathed actions types.
 
 ## Working Example
 
