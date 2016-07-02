@@ -1,3 +1,10 @@
-export multireducer from './multireducer';
-export bindActionCreators from './bindActionCreators';
-export wrapAction from './wrapAction';
+import multireducer from './multireducer';
+import bindActionCreators from './bindActionCreators';
+import wrapAction from './wrapAction';
+
+export {
+  bindActionCreators,
+  wrapAction,
+};
+
+export default multireducer;
