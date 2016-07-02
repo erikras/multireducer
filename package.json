@@ -13,7 +13,7 @@
     "build:umd": "webpack src/index.js dist/multireducer.js --config webpack.config.development.js",
     "build:umd:min": "webpack src/index.js dist/multireducer.min.js --config webpack.config.production.js",
     "clean": "rimraf dist lib",
-    "lint": "eslint src",
+    "lint": "eslint src test",
     "prepublish": "npm run lint && npm run test && npm run clean && npm run build",
     "test": "npm run lint && mocha --compilers js:babel-core/register --recursive"
   },
@@ -48,6 +48,7 @@
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
     "expect": "^1.20.2",
+    "immutable": "^3.8.1",
     "mocha": "^2.5.3",
     "redux": "^3.0.6",
     "rifraf": "^2.0.2",

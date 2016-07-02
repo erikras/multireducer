@@ -1,4 +1,4 @@
-import multireducer from './plainMultireducer';
+import multireducer from './immutableMultireducer';
 import bindActionCreators from './bindActionCreators';
 import wrapAction from './wrapAction';
 

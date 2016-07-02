@@ -1,6 +1,5 @@
 import expect from 'expect';
 import bindActionCreators from '../src/bindActionCreators';
-import wrapAction from '../src/wrapAction'
 import key from '../src/key';
 
 const testBoundAction = (action, boundAction, multireducerKey) => {
@@ -9,7 +8,7 @@ const testBoundAction = (action, boundAction, multireducerKey) => {
   result.meta = {
     ...result.meta,
     [key]: multireducerKey,
-  }
+  };
 
   expect(boundResult)
     .toBeA('object')
@@ -29,7 +28,7 @@ describe('bindActionCreators', () => {
       let dispatchedAction = null;
       const dispatch = (action) => {
         dispatchedAction = action;
-      }
+      };
       bindActionCreators(actionCreator, dispatch, multireducerKey)();
       return dispatchedAction;
     };
@@ -55,7 +54,7 @@ describe('bindActionCreators', () => {
       let dispatchedAction = null;
       const dispatch = (action) => {
         dispatchedAction = action;
-      }
+      };
       bindActionCreators(actions, dispatch, multireducerKey).a();
       return dispatchedAction;
     };
@@ -64,7 +63,7 @@ describe('bindActionCreators', () => {
       let dispatchedAction = null;
       const dispatch = (action) => {
         dispatchedAction = action;
-      }
+      };
       bindActionCreators(actions, dispatch, multireducerKey).b();
       return dispatchedAction;
     };

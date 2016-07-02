@@ -1,7 +1,7 @@
 import mapValues from './mapValues';
 import key from './key';
 
-export default function multireducer(reducers, reducerKey) {
+export default function plainMultireducer(reducers, reducerKey) {
   let isCustomMountPoint;
   if (typeof reducers === 'function') {
     if (!reducerKey) {
@@ -21,17 +21,7 @@ export default function multireducer(reducers, reducerKey) {
 
       // custom mount point
       if (isCustomMountPoint && reducerKey === actionReducerKey) {
-        const newStateValue = reducers(state, action);
-
-        // state is object
-        if (typeof newStateValue === 'object') {
-          return {
-            ...state,
-            ...newStateValue
-          };
-        }
-        // case for simple state slices (numbers, strings etc.)
-        return newStateValue;
+        return reducers(state, action);
       }
 
       // usual multireducer mounting

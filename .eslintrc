@@ -11,7 +11,6 @@
     "indent": [2, 2, {"SwitchCase": 1}],
     "spaced-comment": 0,
     "no-redeclare": 0,
-    "no-console": 2,
 
     //Temporarirly disabled due to a possible bug in babel-eslint (todomvc example)
     "block-scoped-var": 0,
