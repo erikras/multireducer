@@ -14,19 +14,12 @@ export default function multireducer(reducers, reducerKey) {
   const initialState = isCustomMountPoint ? reducers(undefined, {}) : mapValues(reducers, reducer => reducer(undefined, {}));
 
   return (state = initialState, action) => {
-    if (action && action.type && ~action.type.indexOf(key)) {
-      const keyStart = action.type.indexOf(key);
-      const keyOnward = action.type.substring(keyStart);
-      const actionReducerKey = keyOnward.substring(key.length);
-
-      const actionWithoutKey = {
-        ...action,
-        type: action.type.substring(0, keyStart)
-      };
+    if (action && action.meta && action.meta[key]) {
+      const actionReducerKey = action.meta[key];
 
       // custom mount point
       if (isCustomMountPoint && reducerKey === actionReducerKey) {
-        const newStateValue = reducers(state, actionWithoutKey);
+        const newStateValue = reducers(state, action);
 
         // state is object
         if (typeof newStateValue === 'object') {
@@ -45,7 +38,7 @@ export default function multireducer(reducers, reducerKey) {
       if (reducer) {
         return {
           ...state,
-          [actionReducerKey]: reducer(state[actionReducerKey], actionWithoutKey)
+          [actionReducerKey]: reducer(state[actionReducerKey], action)
         };
       }
     }

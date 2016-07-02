@@ -1,6 +1,6 @@
 import expect from 'expect';
 import multireducer from '../src/multireducer';
-import {multireducerWrapAction} from '../src/multireducerBindActionCreators'
+import wrapAction from '../src/wrapAction'
 import key from '../src/key';
 import counter from './counter';
 import {increment, decrement} from './counter';
@@ -10,13 +10,13 @@ const reducer = multireducer({
   b: counter,
   c: counter
 });
-const incrementA = multireducerWrapAction(increment(), 'a');
-const incrementB = multireducerWrapAction(increment(), 'b');
-const incrementC = multireducerWrapAction(increment(), 'c');
+const incrementA = wrapAction(increment(), 'a');
+const incrementB = wrapAction(increment(), 'b');
+const incrementC = wrapAction(increment(), 'c');
 
-const decrementA = multireducerWrapAction(decrement(), 'a');
-const decrementB = multireducerWrapAction(decrement(), 'b');
-const decrementC = multireducerWrapAction(decrement(), 'c');
+const decrementA = wrapAction(decrement(), 'a');
+const decrementB = wrapAction(decrement(), 'b');
+const decrementC = wrapAction(decrement(), 'c');
 
 describe('multireducer', () => {
   it('should initialize properly', () => {
@@ -61,10 +61,8 @@ describe('multireducer', () => {
       b: {count: 69},
       c: {count: 0}
     };
-    expect(reducer(state, increment()))
-      .toEqual(state);
-    expect(reducer(state, decrement()))
-      .toEqual(state);
+    expect(reducer(state, increment())).toEqual(state);
+    expect(reducer(state, decrement())).toEqual(state);
   });
 
   it('should direct action based on key', () => {

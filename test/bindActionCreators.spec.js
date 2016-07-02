@@ -1,21 +1,22 @@
 import expect from 'expect';
-import multireducerBindActionCreators, {multireducerWrapAction, multireducerWrapActionCreator, multireducerWrapActionCreators} from '../src/multireducerBindActionCreators';
+import bindActionCreators from '../src/bindActionCreators';
+import wrapAction from '../src/wrapAction'
 import key from '../src/key';
 
 const testBoundAction = (action, boundAction, multireducerKey) => {
   const result = action();
   const boundResult = boundAction();
-  const type = multireducerWrapAction(result, multireducerKey).type;
+  result.meta = {
+    ...result.meta,
+    [key]: multireducerKey,
+  }
 
   expect(boundResult)
     .toBeA('object')
-    .toEqual({
-      ...result,
-      type
-    });
+    .toEqual(result);
 };
 
-describe('multireducerBindActionCreators', () => {
+describe('bindActionCreators', () => {
   it('should wrap a single action function', () => {
     const multireducerKey = 'foo';
     const actionCreator = () => ({
@@ -29,7 +30,7 @@ describe('multireducerBindActionCreators', () => {
       const dispatch = (action) => {
         dispatchedAction = action;
       }
-      multireducerBindActionCreators(multireducerKey, actionCreator, dispatch)();
+      bindActionCreators(actionCreator, dispatch, multireducerKey)();
       return dispatchedAction;
     };
 
@@ -55,7 +56,7 @@ describe('multireducerBindActionCreators', () => {
       const dispatch = (action) => {
         dispatchedAction = action;
       }
-      multireducerBindActionCreators(multireducerKey, actions, dispatch).a();
+      bindActionCreators(actions, dispatch, multireducerKey).a();
       return dispatchedAction;
     };
 
@@ -64,7 +65,7 @@ describe('multireducerBindActionCreators', () => {
       const dispatch = (action) => {
         dispatchedAction = action;
       }
-      multireducerBindActionCreators(multireducerKey, actions, dispatch).b();
+      bindActionCreators(actions, dispatch, multireducerKey).b();
       return dispatchedAction;
     };
 
