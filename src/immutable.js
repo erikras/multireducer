@@ -1,10 +1,10 @@
 import multireducer from './immutableMultireducer';
 import bindActionCreators from './bindActionCreators';
-import wrapAction from './wrapAction';
+import wrapDispatch from './wrapDispatch';
 
 export {
   bindActionCreators,
-  wrapAction,
+  wrapDispatch,
 };
 
 export default multireducer;
