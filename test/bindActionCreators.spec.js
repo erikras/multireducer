@@ -1,18 +1,18 @@
 import expect from 'expect';
 import bindActionCreators from '../src/bindActionCreators';
-import key from '../src/key';
+import wrapAction from '../src/wrapAction';
 
 const testBoundAction = (action, boundAction, multireducerKey) => {
   const result = action();
   const boundResult = boundAction();
-  result.meta = {
-    ...result.meta,
-    [key]: multireducerKey,
-  };
+  const type = wrapAction(result, multireducerKey).type;
 
   expect(boundResult)
     .toBeA('object')
-    .toEqual(result);
+    .toEqual({
+      ...result,
+      type,
+    });
 };
 
 describe('bindActionCreators', () => {
