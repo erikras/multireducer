@@ -38,6 +38,8 @@ This is where `multireducer` comes in. Multireducer lets you mount the same redu
 
 ```javascript
 import multireducer from 'multireducer';
+// In case you are using Immutable.js, you can:
+// import multireducer from 'multireducer/immutable'
 import list from './reducers/list';
 
 const reducer = combineReducers({
