@@ -2,12 +2,12 @@ import expect from 'expect';
 import bindActionCreators from '../src/bindActionCreators';
 import key from '../src/key';
 
-const testBoundAction = (action, boundAction, multireducerKey) => {
+const testBoundAction = (action, boundAction, reducerKey) => {
   const result = action();
   const boundResult = boundAction();
   result.meta = {
     ...result.meta,
-    [key]: multireducerKey,
+    [key]: reducerKey,
   };
 
   expect(boundResult)
@@ -17,7 +17,7 @@ const testBoundAction = (action, boundAction, multireducerKey) => {
 
 describe('bindActionCreators', () => {
   it('should wrap a single action function', () => {
-    const multireducerKey = 'foo';
+    const reducerKey = 'foo';
     const actionCreator = () => ({
       type: 'testaction',
       dog: 7,
@@ -29,15 +29,15 @@ describe('bindActionCreators', () => {
       const dispatch = (action) => {
         dispatchedAction = action;
       };
-      bindActionCreators(actionCreator, dispatch, multireducerKey)();
+      bindActionCreators(actionCreator, dispatch, reducerKey)();
       return dispatchedAction;
     };
 
-    testBoundAction(actionCreator, getDispatchedAction, multireducerKey);
+    testBoundAction(actionCreator, getDispatchedAction, reducerKey);
   });
 
   it('should bind an object of action functions', () => {
-    const multireducerKey = 'bar';
+    const reducerKey = 'bar';
     const actions = {
       a: () => ({
         type: 'testaction',
@@ -55,7 +55,7 @@ describe('bindActionCreators', () => {
       const dispatch = (action) => {
         dispatchedAction = action;
       };
-      bindActionCreators(actions, dispatch, multireducerKey).a();
+      bindActionCreators(actions, dispatch, reducerKey).a();
       return dispatchedAction;
     };
 
@@ -64,11 +64,11 @@ describe('bindActionCreators', () => {
       const dispatch = (action) => {
         dispatchedAction = action;
       };
-      bindActionCreators(actions, dispatch, multireducerKey).b();
+      bindActionCreators(actions, dispatch, reducerKey).b();
       return dispatchedAction;
     };
 
-    testBoundAction(actions.a, getDispatchedActionA, multireducerKey);
-    testBoundAction(actions.b, getDispatchedActionB, multireducerKey);
+    testBoundAction(actions.a, getDispatchedActionA, reducerKey);
+    testBoundAction(actions.b, getDispatchedActionB, reducerKey);
   });
 });

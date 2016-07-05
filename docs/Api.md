@@ -6,19 +6,19 @@
 
 ## multireducer(reducers, [reducerKey])
 
-Wraps many (or single) reducers into one, much like Redux's `combineReducers()` does, except that the reducer that `multireducer` creates will filter your actions by a `multireducerKey`, so that the right reducer gets the action.
+Wraps many (or single) reducers into one, much like Redux's `combineReducers()` does, except that the reducer that `multireducer` creates will filter your actions by a `reducerKey`, so that the right reducer gets the action.
 
 ### Arguments
 
 * `reducers : (Object or Function) [required]`
 
-If an object is passed, each function inside it will be assumed to be a reducer. A corresponding property names in this object will be used as a `multireducerKey` for reducers. You will specify `multireducerKey` as property of the component that is connected using `connectMultireducer`. If a function is passed, it should be a reducer. In this case you must specify second parameter `reducerKey`.
+If an object is passed, each function inside it will be assumed to be a reducer. A corresponding property names in this object will be used as a `reducerKey` for reducers. You will specify `reducerKey` as property of the component. If a function is passed, it should be a reducer. In this case you must specify second parameter `reducerKey`.
 
 * `reducerKey : (String) [optional]`
 
-This parameter will be used as `multireducerKey`'s value for connected single reducer.
+This parameter will be used as `reducerKey`'s value for connected single reducer.
 
-## bindActionCreators(actions, dispatch, multireducerKey)
+## bindActionCreators(actions, dispatch, reducerKey)
 
 ### Arguments
 
@@ -30,7 +30,7 @@ Object with actions you'd like to be bound to dispatch
 
 A 'global' dispatch you take from `mapDispatchToProps`
 
-* `multireducerKey : String [required]`
+* `reducerKey : String [required]`
 
 Specify the key that will be added to dispathed actions types.
 

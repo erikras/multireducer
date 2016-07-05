@@ -26,7 +26,7 @@ const reducer = combineReducers({
 });
 ```
 
-**STEP 2:** Now use `multireducer`'s `bindActionCreators()` instead of `react-redux`'s `bindActionCreators()` to make your action multireducerify. You have to specify which part of state contains data for your copied reducers and then access it using the `multireducerKey` prop you pass to the connected component, here I recommand `as`. And you have to tell `bindActionCreators` what is your `multireducerKey` too.
+**STEP 2:** Now use `multireducer`'s `bindActionCreators()` instead of `react-redux`'s `bindActionCreators()` to make your action multireducerify. You have to specify which part of state contains data for your copied reducers and then access it using the `reducerKey` you pass to the connected component, here I recommand `as` for the `reducerKey`'s props name. And you have to tell `bindActionCreators` what is your `reducerKey` too.
 
 ```javascript
 import React, { Component, PropTypes } from 'react';
@@ -68,7 +68,7 @@ ListComponent = connect(
 export default ListComponent;
 ```
 
-Or if you mounted one copy of reducer, access needed part of state directly. And tell `bindActionCreators` what is your `multireducerKey`, in this example it should be 'additional'.
+Or if you mounted one copy of reducer, access needed part of state directly. And tell `bindActionCreators` what is your `reducerKey`, in this example it should be 'additional'.
 
 ```javascript
 import React, { Component, PropTypes } from 'react';
@@ -89,7 +89,7 @@ ListComponent = connect(
 export default ListComponent;
 ```
 
-**STEP 3:** Pass the appropriate `multireducerKey` prop to your decorated component, you can name it whaterver you want.
+**STEP 3:** Pass the appropriate `reducerKey` prop to your decorated component, you can name it whaterver you want.
 
 ```javascript
 render() {
