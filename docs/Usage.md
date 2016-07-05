@@ -1,4 +1,4 @@
-## How It Works
+## Usage
 
 **STEP 1:** First you will need to wrap the reducer you want to copy.
 
