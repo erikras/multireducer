@@ -1,23 +1,23 @@
 import expect from 'expect';
-import multireducerBindActionCreators, {multireducerWrapAction, multireducerWrapActionCreator, multireducerWrapActionCreators} from '../src/multireducerBindActionCreators';
+import bindActionCreators from '../src/bindActionCreators';
 import key from '../src/key';
 
-const testBoundAction = (action, boundAction, multireducerKey) => {
+const testBoundAction = (action, boundAction, reducerKey) => {
   const result = action();
   const boundResult = boundAction();
-  const type = multireducerWrapAction(result, multireducerKey).type;
+  result.meta = {
+    ...result.meta,
+    [key]: reducerKey,
+  };
 
   expect(boundResult)
     .toBeA('object')
-    .toEqual({
-      ...result,
-      type
-    });
+    .toEqual(result);
 };
 
-describe('multireducerBindActionCreators', () => {
+describe('bindActionCreators', () => {
   it('should wrap a single action function', () => {
-    const multireducerKey = 'foo';
+    const reducerKey = 'foo';
     const actionCreator = () => ({
       type: 'testaction',
       dog: 7,
@@ -28,16 +28,16 @@ describe('multireducerBindActionCreators', () => {
       let dispatchedAction = null;
       const dispatch = (action) => {
         dispatchedAction = action;
-      }
-      multireducerBindActionCreators(multireducerKey, actionCreator, dispatch)();
+      };
+      bindActionCreators(actionCreator, dispatch, reducerKey)();
       return dispatchedAction;
     };
 
-    testBoundAction(actionCreator, getDispatchedAction, multireducerKey);
+    testBoundAction(actionCreator, getDispatchedAction, reducerKey);
   });
 
   it('should bind an object of action functions', () => {
-    const multireducerKey = 'bar';
+    const reducerKey = 'bar';
     const actions = {
       a: () => ({
         type: 'testaction',
@@ -54,8 +54,8 @@ describe('multireducerBindActionCreators', () => {
       let dispatchedAction = null;
       const dispatch = (action) => {
         dispatchedAction = action;
-      }
-      multireducerBindActionCreators(multireducerKey, actions, dispatch).a();
+      };
+      bindActionCreators(actions, dispatch, reducerKey).a();
       return dispatchedAction;
     };
 
@@ -63,12 +63,12 @@ describe('multireducerBindActionCreators', () => {
       let dispatchedAction = null;
       const dispatch = (action) => {
         dispatchedAction = action;
-      }
-      multireducerBindActionCreators(multireducerKey, actions, dispatch).b();
+      };
+      bindActionCreators(actions, dispatch, reducerKey).b();
       return dispatchedAction;
     };
 
-    testBoundAction(actions.a, getDispatchedActionA, multireducerKey);
-    testBoundAction(actions.b, getDispatchedActionB, multireducerKey);
+    testBoundAction(actions.a, getDispatchedActionA, reducerKey);
+    testBoundAction(actions.b, getDispatchedActionB, reducerKey);
   });
 });
