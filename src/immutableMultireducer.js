@@ -10,10 +10,11 @@ export default function plainMultireducer(reducers, reducerKey) {
       isCustomMountPoint = true;
     }
   }
-
+  
+  const initAction = { type: '@@multireducer/INIT' };
   const initialState = isCustomMountPoint ?
-    reducers(undefined, {}) :
-    new Immutable.Map(reducers).map(reducer => reducer(undefined, {}));
+    reducers(undefined, initAction) :
+    new Immutable.Map(reducers).map(reducer => reducer(undefined, initAction));
 
   return (state = initialState, action) => {
     if (action && action.meta && action.meta[key]) {
