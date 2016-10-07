@@ -10,7 +10,7 @@ export default function plainMultireducer(reducers, reducerKey) {
       isCustomMountPoint = true;
     }
   }
-  
+
   const initAction = { type: '@@multireducer/INIT' };
   const initialState = isCustomMountPoint ?
     reducers(undefined, initAction) :
