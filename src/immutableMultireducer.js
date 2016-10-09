@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 import key from './key';
+import initAction from './initAction';
 
 export default function plainMultireducer(reducers, reducerKey) {
   let isCustomMountPoint;
@@ -11,7 +12,6 @@ export default function plainMultireducer(reducers, reducerKey) {
     }
   }
 
-  const initAction = { type: '@@multireducer/INIT' };
   const initialState = isCustomMountPoint ?
     reducers(undefined, initAction) :
     new Immutable.Map(reducers).map(reducer => reducer(undefined, initAction));
