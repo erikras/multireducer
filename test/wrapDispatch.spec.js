@@ -16,7 +16,8 @@ describe('wrapDispatch', () => {
 
   it('dispatch thunk action', () => {
     const getState = () => {};
-    const dispatch = createSpy().andCall(action => action(dispatch, getState));
+    const extraArgument = {};
+    const dispatch = createSpy().andCall(action => action(dispatch, getState, extraArgument));
     const action = createSpy();
     const wrappedDispatch = wrapDispatch(dispatch, 'additional');
     wrappedDispatch(action);
@@ -28,7 +29,8 @@ describe('wrapDispatch', () => {
       wrappedDispatch,
       getState,
       dispatch,
-      'additional'
+      'additional',
+      extraArgument
     ]);
   });
 });
