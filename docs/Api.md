@@ -3,6 +3,7 @@
 * [multireducer](#multireducer)
 * [bindActionCreators](#bindActionCreators)
 * [wrapDispatch](#wrapDispatch)
+* [wrapAction](#wrapAction)
 
 ## multireducer(reducers, [reducerKey])
 
@@ -53,4 +54,30 @@ import { wrapDispatch } from 'multireducer'
 import { add, remove } from './actions/list'
 
 wrapDispatch(dispatch, 'additional')(add)
+```
+
+## wrapAction(action, reducerKey)
+
+Wrap a Redux's `action` with given `reducerKey`.
+
+### Arguments
+
+* `action : Object [required]`
+
+Redux's action.
+
+* `reducerKey : String [required]`
+
+### Example
+
+```javascript
+import { wrapAction } from 'multireducer'
+
+// say we have a mapDispatchToProps function
+function mapDispatchToProps(dispatch) {
+  return {
+    onClick: () => dispatch(wrapAction({ type: 'SOME_ACTION' }, 'reducerKey'))
+  }
+}
+
 ```
