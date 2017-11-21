@@ -56,7 +56,6 @@
     "webpack": "^1.12.12"
   },
   "peerDependencies": {
-    "immutable": "^3.0.0",
     "redux": "^3.0.0"
   },
   "npmName": "multireducer",
